@@ -71,9 +71,6 @@ export default buildConfig({
     Site,
   ],
   typescript: {
-    outputFile: path.resolve(__dirname, "payload-types.ts"),
-  },
-  graphQL: {
-    schemaOutputFile: path.resolve(__dirname, "generated-schema.graphql"),
-  },
+    outputFile: path.resolve(__dirname, "app/payload-types.ts"),
+   }
 });

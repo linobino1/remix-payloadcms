@@ -1,7 +1,23 @@
+import { useLoaderData } from "@remix-run/react";
+import type { LoaderArgs } from "@remix-run/server-runtime";
+
+export const loader = async ({ context: { payload } }: LoaderArgs) => {
+  const users = await payload.find({
+    collection: "users",
+  });
+  // return json({ userCount: users.totalDocs });
+  return users.docs;
+};
+
 export default function Index() {
+  const data = useLoaderData<typeof loader>();
+  const test = JSON.stringify(data, 0, 2);
+
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Welcome to Remix</h1>
+      {test}
       <ul>
         <li>
           <a
