@@ -8,6 +8,12 @@ Simple template to get started with [Remix](https://remix.run) and [PayloadCMS](
 yarn dev
 ```
 
+OR:
+
+```sh
+docker compose up -d
+```
+
 ## Deployment
 
 First, build your app for production:
