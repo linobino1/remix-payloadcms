@@ -44,6 +44,8 @@ async function start() {
   app.use(express.static("public", { maxAge: "1h" }));
 
   app.use(morgan("tiny"));
+  
+  app.use(payload.authenticate)
 
   app.all(
     "*",

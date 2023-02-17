@@ -13,12 +13,7 @@ const Users: CollectionConfig = {
     singular: t('User'),
     plural: t('Users'),
   },
-  auth: {
-    cookies: {
-      sameSite: 'strict',
-      secure: false,
-    },
-  },
+  auth: true,
   admin: {
     group: t('Site'),
     useAsTitle: 'name',
