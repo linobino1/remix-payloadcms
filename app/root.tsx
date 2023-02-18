@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import RefreshAuthToken from "./util/refreshAuthToken";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -26,6 +27,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <RefreshAuthToken />
       </body>
     </html>
   );
