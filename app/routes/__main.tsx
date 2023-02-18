@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 
 export const loader = ({ context: { user }}: LoaderArgs) => {
   return json({
@@ -19,9 +19,7 @@ export default function Layout() {
           { user ? (
             <>
               {user?.email}<br />
-              <Form method="post">
-                <button type="submit">log out</button>
-              </Form>
+              <Link to="/auth/me">my account</Link>
             </>
           ) : (
             <Link to="/auth/login">login</Link>

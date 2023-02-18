@@ -1,11 +1,12 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
-import type { ActionArgs, ActionFunction } from "@remix-run/server-runtime";
+import type { ActionArgs, ActionFunction} from "@remix-run/server-runtime";
+import { redirect } from "@remix-run/server-runtime";
 
 export const action: ActionFunction = async ({ context: { res }}: ActionArgs) => {
   res.clearCookie('payload-token');
-  return null;
+  return redirect('/');
 }
 
 export const loader = ({ context: { user, res }}: LoaderArgs) => {
