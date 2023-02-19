@@ -1,7 +1,12 @@
 import type { CollectionConfig } from 'payload/types';
+import { t } from '../i18n';
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: {
+    singular: t('Media'),
+    plural: t('Media'),
+  },
   access: {
     read: (): boolean => true, // Everyone can read Media
   },
