@@ -1,4 +1,4 @@
-import { Form, useActionData } from "@remix-run/react";
+import { Form, Link, useActionData } from "@remix-run/react";
 import type { ActionArgs} from "@remix-run/node";
 import { json} from "@remix-run/node";
 import { redirect } from "@remix-run/node";
@@ -23,11 +23,11 @@ export const action = async ({ request, context: { payload, res }}: ActionArgs )
   }
 }
 
-export default function Login() {
+export default function SignIn() {
   const actionData = useActionData<typeof action>();
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Sign In</h1>
       <Form method="post">
         { actionData?.error && (
           <p>{actionData.error}</p>
@@ -40,6 +40,8 @@ export default function Login() {
         
         <button type="submit">submit</button>
       </Form>
+      <Link to="/auth/forgot-password">forgot password?</Link>
+      <Link to="/auth/signup">sign up</Link>
     </div>
   )
 }

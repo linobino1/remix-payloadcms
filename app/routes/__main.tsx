@@ -22,7 +22,7 @@ export default function Layout() {
               <Link to="/auth/me">my account</Link>
             </>
           ) : (
-            <Link to="/auth/login">login</Link>
+            <Link to="/auth/signin">sign in</Link>
           )}
         </nav>
         <Outlet />

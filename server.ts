@@ -5,10 +5,26 @@ import morgan from "morgan";
 import payload from "payload";
 import { createRequestHandler } from "@remix-run/express";
 import invariant from "tiny-invariant";
+import nodemailer from "nodemailer";
 
 require("dotenv").config();
 
 const BUILD_DIR = path.join(process.cwd(), "build");
+
+const transport = (
+  process.env.ETHEREAL_MAIL_USER && process.env.ETHEREAL_MAIL_PASS
+) ? nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  auth: {
+      user: process.env.ETHEREAL_MAIL_USER,
+      pass: process.env.ETHEREAL_MAIL_PASS,
+  },
+}) : undefined;
+
+if (typeof transport === 'undefined') {
+  console.log('no email transport configured.');
+}
 
 start();
 
@@ -23,6 +39,11 @@ async function start() {
     secret: process.env.PAYLOAD_SECRET,
     mongoURL: process.env.MONGODB_URI,
     express: app,
+    email: {
+      fromName: 'remix',
+      fromAddress: 'app@example.com',
+      transport,
+    },
     onInit: () => {
       payload.logger.info(`Payload Admin URL: ${payload.getAdminURL()}`);
     },
