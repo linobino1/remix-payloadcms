@@ -25,11 +25,15 @@ import Site from './cms/globals/Site';
 import ScreeningTypes from './cms/collections/Screenings/ScreeningTypes';
 import Locations from './cms/collections/Screenings/Locations';
 import ScreeningSeries from './cms/collections/Screenings/ScreeningSeries';
+import i18n from "./i18n";
 
 export default buildConfig({
   serverURL: "http://localhost:3000",
   admin: {
     user: Users.slug,
+  },
+  i18n: {
+    ...i18n,
   },
   collections: [
     // Site
