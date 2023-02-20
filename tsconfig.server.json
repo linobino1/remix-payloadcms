@@ -11,7 +11,11 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "jsx": "react"
+    "jsx": "react",
+    "paths": {
+      "~/*": ["./app/*"],
+       "payload/generated-types": ["./cms/payload-types.ts"]
+    }
   },
   "include": [
     "server.ts",
