@@ -35,7 +35,7 @@ export default async function handleRequest(
       lng, // The locale we detected above
       ns, // The namespaces the route about to render wants to use
       backend: {
-        loadPath: resolve("./../public/locales/{{lng}}/{{ns}}.json"),
+        loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json"),
       },
     });
 
