@@ -1,6 +1,6 @@
-import type { User } from 'payload-types';
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../i18n';
+import type { User } from "payload/generated-types";
 
 export enum RolesEnum {
   admin = 'admin',
