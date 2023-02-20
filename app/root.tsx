@@ -15,18 +15,21 @@ import i18next from "~/i18next.server";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
-export const meta: MetaFunction = () => ({
+export async function loader({ request }: LoaderArgs) {
+  let locale = await i18next.getLocale(request);
+  const t = await i18next.getFixedT(request, 'common')
+  const siteTitle = t('siteTitle')
+  return json({ locale, siteTitle }, {
+    headers: {"Set-Cookie": await i18nCookie.serialize(locale)}
+  })}
+
+export const meta: MetaFunction = ({ data }) => ({
   charset: "utf-8",
-  title: "New Remix App",
+  title: data.siteTitle,
   viewport: "width=device-width,initial-scale=1",
 });
 
-export async function loader({ request }: LoaderArgs) {
-  let locale = await i18next.getLocale(request);
-  return json({ locale });
-}
-
-export let handle = {
+export const handle = {
   // In the handle export, we can add a i18n key with namespaces our route
   // will need to load. This key can be a single string or an array of strings.
   // TIP: In most cases, you should set this to your defaultNS from your i18n config
@@ -44,7 +47,6 @@ export function useChangeLanguage(locale: string) {
 export default function App() {
   // Get the locale from the loader
   let { locale } = useLoaderData<typeof loader>();
-
   let { i18n } = useTranslation();
 
   // This hook will change the i18n instance language to the current locale
