@@ -19,10 +19,6 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  let callbackName = isbot(request.headers.get("user-agent"))
-    ? "onAllReady"
-    : "onShellReady";
-
   let instance = createInstance();
   let lng = await i18next.getLocale(request);
   let ns = i18next.getRouteNamespaces(remixContext);
@@ -38,6 +34,10 @@ export default async function handleRequest(
         loadPath: resolve("./public/locales/{{lng}}/{{ns}}.json"),
       },
     });
+
+  let callbackName = isbot(request.headers.get("user-agent"))
+    ? "onAllReady"
+    : "onShellReady";
 
   return new Promise((resolve, reject) => {
     let didError = false;

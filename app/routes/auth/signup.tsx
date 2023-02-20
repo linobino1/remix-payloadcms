@@ -2,9 +2,17 @@ import { Form, useActionData } from "@remix-run/react";
 import type { ActionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { RolesEnum } from "cms/collections/Users";
+import { useTranslation } from "react-i18next";
+import classes from "./auth.module.css";
+import i18next from "~/i18next.server";
+
+// i18n namespace
+const ns = "auth";
+export const handle = { i18n: "auth" };
 
 export const action = async ({ request, context: { payload }}: ActionArgs ) => {
   const form = await request.formData();
+  const t = await i18next.getFixedT(request, ns);
   
   // create user
   try {
@@ -20,41 +28,46 @@ export const action = async ({ request, context: { payload }}: ActionArgs ) => {
   } catch (err) {
     return json({
       success: false,
-      error: 'could not create account, maybe you are already registered?',
+      message: t('could not create account, maybe you are already registered?'),
     });
   }
   
   return json({
     success: true,
+    message: t('your account has been created, please check your inbox now'),
   });
 }
 
 export default function SignUp() {
   const data = useActionData<typeof action>();
+  const { t } = useTranslation(ns);
+
   return (
-    <div>
-      <h1>Sign Up</h1>
-      { data?.success ? (
-        <p>you should receive an email soon</p>
-      ) : (
-        <>
-          { data && ('error' in data) && (
-            <p>{data.error as string}</p>
-          )}
-          <Form method="post">
-            <label htmlFor="name">name</label>
-            <input type="name" name="name" />
-
-            <label htmlFor="email">email</label>
-            <input type="email" name="email" />
-
-            <label htmlFor="password">password</label>
-            <input type="password" name="password" />
-
-            <button type="submit">submit</button>
-          </Form>
-        </>
+    <>
+      <h1>{t('sign up')}</h1>
+      { data?.message && (
+        <p>{data.message}</p>
       )}
-    </div>
+      { !data?.success && (
+        <Form method="post" className={classes.form}>
+          <label>
+            {t('name')}
+            <input type="name" name="name" />
+          </label>
+
+          <label>
+            {t('email')}
+            <input type="email" name="email" />
+          </label>
+
+          <label>
+            {t('password')}
+            <input type="password" name="password" />
+          </label>
+
+          <button type="submit">{t('sign up')}</button>
+        </Form>
+      )}
+    </>
   );
 }

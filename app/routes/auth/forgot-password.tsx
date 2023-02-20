@@ -2,9 +2,24 @@ import { Form, useActionData } from "@remix-run/react";
 import type { ActionArgs} from "@remix-run/node";
 import { fetch } from "@remix-run/node";
 import { json } from "@remix-run/node";
+import { useTranslation } from "react-i18next";
+import classes from "./auth.module.css";
+import i18next from "~/i18next.server";
+import { validate } from "email-validator";
+
+// i18n namespace
+const ns = "auth";
 
 export const action = async ({ request }: ActionArgs ) => {
   const form = await request.formData();
+  const t = await i18next.getFixedT(request, ns);
+  
+  if (!validate(form.get('email') as string)) {
+    return json({
+      success: false,
+      message: t('invalid email address given'),
+    });
+  }
   
   const res = await fetch(`http://localhost:3000/api/users/forgot-password`, {
     method: 'POST',
@@ -19,12 +34,12 @@ export const action = async ({ request }: ActionArgs ) => {
   if (data) {
     return json({
       success: true,
-      message: 'please check your email',
+      message: t('please check your inbox'),
     });
   } else {
     return json({
       success: false,
-      message: 'could not reset password, double check email address',
+      message: t('invalid email address given'),
     });
   }
   
@@ -52,23 +67,27 @@ export const action = async ({ request }: ActionArgs ) => {
 
 export default function ForgotPassword() {
   const data = useActionData<typeof action>();
+  const { t } = useTranslation(ns);
+
   return (
-    <div>
-      <h1>Password Reset</h1>
+    <>
+      <h1>{t('reset your password')}</h1>
       { data && (
         <p>{data.message}</p>
       )}
       { !data?.success && (
-        <Form method="post">
+        <Form method="post" className={classes.form}>
           { data && ('error' in data) && (
             <p>{data.error as string}</p>
           )}
-          <label htmlFor="email">email</label>
-          <input type="email" name="email" />
+          <label>
+            {t('email')}
+            <input type="email" name="email" />
+          </label>
           
-          <button type="submit">submit</button>
+          <button type="submit">{t('submit')}</button>
         </Form>
       )}
-    </div>
+    </>
   )
 }

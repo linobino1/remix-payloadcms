@@ -2,9 +2,16 @@ import { Form, Link, useActionData } from "@remix-run/react";
 import type { ActionArgs} from "@remix-run/node";
 import { json} from "@remix-run/node";
 import { redirect } from "@remix-run/node";
+import classes from "./auth.module.css";
+import { useTranslation } from "react-i18next";
+import i18next from "~/i18next.server";
+
+// i18n namespace
+const ns = "auth";
 
 export const action = async ({ request, context: { payload, res }}: ActionArgs ) => {
   const form = await request.formData();
+  const t = await i18next.getFixedT(request, ns);
   
   try {
     await payload.login({
@@ -18,30 +25,38 @@ export const action = async ({ request, context: { payload, res }}: ActionArgs )
     return redirect('/');
   } catch (err) {
     return json({
-      error: 'email/password invalid',
+      error: t('email and/or password invalid'),
     });
   }
 }
 
 export default function SignIn() {
   const actionData = useActionData<typeof action>();
+  const { t } = useTranslation(ns);
+
   return (
-    <div>
-      <h1>Sign In</h1>
-      <Form method="post">
+    <>
+      <h1>{t('sign in')}</h1>
+      <Form method="post" className={classes.form}>
         { actionData?.error && (
           <p>{actionData.error}</p>
         )}
-        <label htmlFor="email">email</label>
-        <input type="email" name="email" />
+        <label>
+          {t('email')}
+          <input type="email" name="email" />
+        </label>
 
-        <label htmlFor="password">password</label>
-        <input type="password" name="password" />
-        
-        <button type="submit">submit</button>
+        <label>
+          {t('password')}
+          <input type="password" name="password" />
+        </label>       
+
+        <button type="submit">{t('sign in')}</button>
       </Form>
-      <Link to="/auth/forgot-password">forgot password?</Link>
-      <Link to="/auth/signup">sign up</Link>
-    </div>
+      <nav className={classes.nav}>
+        <Link to="/auth/forgot-password">{t('forgot password?')}</Link>
+        <Link to="/auth/signup">{t('sign up')}</Link>
+      </nav>
+    </>
   )
 }

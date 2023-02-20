@@ -14,6 +14,19 @@ import type { LoaderArgs } from "@remix-run/node";
 import i18next from "~/i18next.server";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
+import type { LinksFunction } from "@remix-run/node";
+import { cssBundleHref } from "@remix-run/css-bundle";
+import styles from "./root.module.css";
+import { i18nCookie } from "./cookie";
+
+export const links: LinksFunction = () => {
+  return [
+    // use css bundling
+    ...(cssBundleHref
+      ? [{ rel: "stylesheet", href: cssBundleHref }]
+      : []),
+  ];
+};
 
 export async function loader({ request }: LoaderArgs) {
   let locale = await i18next.getLocale(request);
@@ -61,7 +74,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className={styles.body}>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
