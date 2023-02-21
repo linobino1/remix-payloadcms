@@ -20,6 +20,12 @@ export const Site: GlobalConfig = {
       label: t('Address'),
       type: 'richText',
     },
+    {
+      name: 'logo',
+      label: t('Logo'),
+      type: 'upload',
+      relationTo: 'media',
+    },
   ],
 };
 
