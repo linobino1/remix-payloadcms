@@ -15,8 +15,6 @@ const regenerateMediaSizes = async () => {
       local: true,
     });
 
-    console.log(payload.schema)
-
     const media = await payload.find({
       collection: 'media',
       depth: 0,
