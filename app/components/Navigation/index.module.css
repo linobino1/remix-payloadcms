@@ -29,3 +29,7 @@
 .navItem:hover {
   color: var(--color-theme-contrast);
 }
+.image {
+  height: 1.3rem;
+  width: auto;
+}
