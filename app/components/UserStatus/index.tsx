@@ -1,18 +1,11 @@
 import React from 'react';
-import { Link, useLoaderData } from '@remix-run/react';
-import type { LoaderArgs } from '@remix-run/node';
-import { json } from '@remix-run/node';
+import { Link, useMatches } from '@remix-run/react';
 import { useTranslation } from 'react-i18next';
 import classes from './index.module.css';
 
-export const loader = ({ context: { user }}: LoaderArgs) => {
-  return json({
-    user,
-  });
-}
 export const UserStatus: React.FC = () => {
   const { t } = useTranslation();
-  const { user } = useLoaderData<typeof loader>();
+  const user = useMatches().find((x) => x.id === 'routes/__main')?.data.user;
 
   return (
     <div className={classes.userStatus}>
