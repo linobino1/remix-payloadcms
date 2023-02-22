@@ -57,16 +57,16 @@ export const loader = async ({ params, context: { payload }}: LoaderArgs) => {
         and: [
           {
             date: {
-              less_than_equal: screeningsList.until as string
-                ? parseISO(screeningsList.until as string)
-                : undefined,
+              greater_than_equal: screeningsList.from as string
+                ? parseISO(screeningsList.from as string)
+                : MIN_DATE,
             },
           },
           {
             date: {
-              greater_than_equal: screeningsList.from as string
-                ? parseISO(screeningsList.from as string)
-                : undefined,
+              less_than_equal: screeningsList.until as string
+                ? parseISO(screeningsList.until as string)
+                : MAX_DATE,
             },
           },
         ],
@@ -74,6 +74,7 @@ export const loader = async ({ params, context: { payload }}: LoaderArgs) => {
     });
   }
 
+  console.log(screenings)
   return {
     page,
     posts: posts?.docs,
