@@ -8,6 +8,7 @@ import { Link } from '@remix-run/react';
 import { mediaUrl } from '~/util/mediaUrl';
 import { Image } from '~/components/Image';
 import classes from './index.module.css';
+import LanguageSwitch from '../LanguageSwitch';
 
 type Props = {
   navigation?: NavigationType
@@ -15,13 +16,16 @@ type Props = {
 };
 
 export const Navigation: React.FC<Props> = ({ navigation, className }) => {
-
   // each item renders as either an internal link, an external link with an icon or text, or another navigation
   return navigation ? (
     <nav className={`${classes.nav} ${classes[navigation.type]} ${className}`}>
       {navigation?.items.map(({
-        id, icon, subnavigation, page, url, name,
+        id, icon, subnavigation, page, url, name, type,
       }) => {
+        if (type === 'language') {
+          return <LanguageSwitch key={id} className={classes.navItem} />;
+        }
+
         const href = page as Page ? `/${(page as Page).slug}` : url;
 
         // const isActive = (

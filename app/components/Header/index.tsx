@@ -10,6 +10,7 @@ import { Image } from '~/components/Image';
 import { mediaUrl } from '~/util/mediaUrl';
 import type { Site, Navigation as NavigationType } from 'payload/generated-types';
 import classes from './index.module.css';
+import { createPortal } from 'react-dom';
 
 type Props = {
   site: Site

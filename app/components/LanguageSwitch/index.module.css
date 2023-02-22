@@ -1,0 +1,11 @@
+.language {
+  padding-left: .5rem;
+  padding-right: .5rem;  
+  font-weight: var(--font-weight-normal);
+}
+.language.active {
+  font-weight: var(--font-weight-bold);
+}
+.language:not(:last-child) {
+  border-right: 2px solid;
+}

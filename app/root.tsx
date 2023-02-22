@@ -32,8 +32,13 @@ export async function loader({ request }: LoaderArgs) {
   let locale = await i18next.getLocale(request);
   const t = await i18next.getFixedT(request, 'common')
   const siteTitle = t('siteTitle')
-  return json({ locale, siteTitle }, {
-    headers: {"Set-Cookie": await i18nCookie.serialize(locale)}
+  return json({
+    locale,
+    siteTitle
+  }, {
+    headers: {
+      "Set-Cookie": await i18nCookie.serialize(locale)
+    },
   })}
 
 export const meta: MetaFunction = ({ data }) => ({

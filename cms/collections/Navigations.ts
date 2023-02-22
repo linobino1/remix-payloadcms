@@ -1,12 +1,6 @@
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../i18n';
 
-export enum NavigationItemTypesEnum {
-  internal = 'internal',
-  external = 'external',
-  subnavigation = 'subnavigation',
-}
-
 export enum NavigationTypesEnum {
   main = 'main',
   footer = 'footer',
@@ -71,6 +65,10 @@ export const Navigations: CollectionConfig = {
               label: 'Subnavigation',
               value: 'subnavigation',
             },
+            {
+              label: 'Language Switch',
+              value: 'language',
+            },
           ],
         },
         {
@@ -85,9 +83,7 @@ export const Navigations: CollectionConfig = {
           relationTo: 'pages',
           required: true,
           admin: {
-            condition: (data, siblingData): boolean => (
-              siblingData.type === NavigationItemTypesEnum.internal
-            ),
+            condition: (data, siblingData) => siblingData.type === 'internal',
           },
         },
         // external link

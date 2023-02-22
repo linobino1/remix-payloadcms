@@ -6,6 +6,7 @@ export type Props = {
   height?: number
   alt: string
   className?: string
+  fill?: boolean
 }
 
 export const Image: React.FC<Props> = ({
