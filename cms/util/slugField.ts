@@ -1,27 +1,14 @@
-import type { Field, FieldHook } from 'payload/types';
+import type { Field } from 'payload/types';
 import slugify from 'slugify';
 
-export const format = (s: string): string => {
+export const slugFormat = (s: string): string => {
   if (!s) return s;
   return slugify(s, {
     lower: true,
   });
 };
 
-export const slugHook = (fallback: string): FieldHook => ({ value, originalDoc, data }) => {
-  if (typeof value === 'string') {
-    return format(value);
-  }
-  const fallbackData = (data && data[fallback]) || (originalDoc && originalDoc[fallback]);
-
-  if (fallbackData && typeof fallbackData === 'string') {
-    return format(fallbackData);
-  }
-
-  return value;
-};
-
-export const slugField = (fallback: string): Field => ({
+export const slugField = (field: string): Field => ({
   name: 'slug',
   type: 'text',
   unique: true,
@@ -31,7 +18,18 @@ export const slugField = (fallback: string): Field => ({
   },
   hooks: {
     beforeValidate: [
-      slugHook(fallback),
+      ({ value, originalDoc, data }) => {
+        if (typeof value === 'string') {
+          return slugFormat(value);
+        }
+        const fieldData = (data && data[field]) || (originalDoc && originalDoc[field]);
+
+        if (fieldData && typeof fieldData === 'string') {
+          return slugFormat(fieldData);
+        }
+
+        return value;
+      }
     ],
   },
 });
