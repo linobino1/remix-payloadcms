@@ -5,7 +5,6 @@ import invariant from "tiny-invariant";
 
 const restCountries = 'https://restcountries.com/v2/all?fields=alpha2Code,translations,name';
 const locales = i18n.supportedLngs;
-let i = 0;
 
 export async function seedCountries() {
   let countries = [];
