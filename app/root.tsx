@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction, SerializeFrom } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -18,6 +18,10 @@ import type { LinksFunction } from "@remix-run/node";
 import { cssBundleHref } from "@remix-run/css-bundle";
 import styles from "./root.module.css";
 import { i18nCookie } from "./cookie";
+import type { DynamicLinksFunction } from "remix-utils";
+import { DynamicLinks } from "remix-utils";
+import { mediaUrl } from "./util/mediaUrl";
+import type { Media} from "payload/generated-types";
 
 export const links: LinksFunction = () => {
   return [
@@ -28,31 +32,45 @@ export const links: LinksFunction = () => {
   ];
 };
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request, context: { payload } }: LoaderArgs) {
   let locale = await i18next.getLocale(request);
-  const t = await i18next.getFixedT(request, 'common')
-  const siteTitle = t('siteTitle')
+  const [site, localeCookie] = await Promise.all([
+    payload.findGlobal({
+      slug: 'site',
+      depth: 1,
+    }),
+    i18nCookie.serialize(locale),
+  ]);
+
   return json({
+    site,
     locale,
-    siteTitle
   }, {
     headers: {
-      "Set-Cookie": await i18nCookie.serialize(locale)
+      "Set-Cookie": localeCookie,
     },
-  })}
+  })
+}
 
-export const meta: MetaFunction = ({ data }) => ({
+const dynamicLinks: DynamicLinksFunction<SerializeFrom<typeof loader>> = ({ data }) => {
+  return [
+    {
+      rel: "icon",
+      href: mediaUrl(data.site.logo as Media),
+      type: "image/svg",
+    },
+  ]
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => ({
   charset: "utf-8",
-  title: data.siteTitle,
+  title: data.site.title,
   viewport: "width=device-width,initial-scale=1",
 });
 
 export const handle = {
-  // In the handle export, we can add a i18n key with namespaces our route
-  // will need to load. This key can be a single string or an array of strings.
-  // TIP: In most cases, you should set this to your defaultNS from your i18n config
-  // or if you did not set one, set it to the i18next default namespace "translation"
-  i18n: "common",
+  i18n: "common", // i18n namespace
+  dynamicLinks,
 };
 
 export function useChangeLanguage(locale: string) {
@@ -67,10 +85,7 @@ export default function App() {
   let { locale } = useLoaderData<typeof loader>();
   let { i18n } = useTranslation();
 
-  // This hook will change the i18n instance language to the current locale
-  // detected by the loader, this way, when we do something to change the
-  // language, this locale will change and i18next will load the correct
-  // translation files
+  // handle locale change
   useChangeLanguage(locale);
 
   return (
@@ -78,6 +93,7 @@ export default function App() {
       <head>
         <Meta />
         <Links />
+        <DynamicLinks />
       </head>
       <body className={styles.body}>
         <Outlet />
