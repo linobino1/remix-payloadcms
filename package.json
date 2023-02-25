@@ -13,7 +13,8 @@
     "start": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js NODE_ENV=production node dist/server.js",
     "typecheck": "tsc -p tsconfig.server.json",
     "generate:types": "cross-env payload generate:types",
-    "generate:images": "cross-env ts-node ./cms/scripts/generateImageSizes"
+    "generate:images": "cross-env ts-node ./cms/scripts/generateImageSizes",
+    "seed": "cross-env PAYLOAD_CONFIG_PATH=dist/payload.config.js ts-node ./cms/seed/index.ts"
   },
   "dependencies": {
     "@remix-run/css-bundle": "^1.13.0",
