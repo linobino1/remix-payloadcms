@@ -76,5 +76,10 @@ export default buildConfig({
   ],
   typescript: {
     outputFile: path.resolve(__dirname, "cms/payload-types.ts"),
-   }
+  },
+  localization: {
+    defaultLocale: i18n.fallbackLng,
+    locales: i18n.supportedLngs,
+    fallback: true,
+  },
 });

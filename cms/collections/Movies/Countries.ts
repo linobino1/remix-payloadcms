@@ -14,14 +14,24 @@ const Countries: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: () => true,
+    update: () => true,
   },
   fields: [
+    {
+      name: 'id',
+      type: 'text',
+      admin: {
+        description: t('alpha2 country code'),
+      },
+    },
     {
       name: 'name',
       label: t('Name'),
       type: 'text',
       required: true,
-      unique: true,
+      unique: false,
+      localized: true,
     },
   ],
 };
