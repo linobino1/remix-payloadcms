@@ -1,12 +1,6 @@
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../i18n';
 
-export enum NavigationTypesEnum {
-  main = 'main',
-  footer = 'footer',
-  socialMedia = 'socialMedia',
-}
-
 export const Navigations: CollectionConfig = {
   slug: 'navigations',
   admin: {
@@ -24,15 +18,15 @@ export const Navigations: CollectionConfig = {
       options: [
         {
           label: 'Main Navigation',
-          value: NavigationTypesEnum.main,
+          value: 'main',
         },
         {
           label: 'Footer Navigation',
-          value: NavigationTypesEnum.footer,
+          value: 'footer',
         },
         {
           label: 'Social Media',
-          value: NavigationTypesEnum.socialMedia,
+          value: 'socialMedia',
         },
       ],
       required: true,
@@ -74,7 +68,11 @@ export const Navigations: CollectionConfig = {
         {
           name: 'name',
           type: 'text',
+          localized: true,
           required: true,
+          admin: {
+            condition: (data, siblingData) => siblingData.type !== 'language',
+          },
         },
         // internal link
         {

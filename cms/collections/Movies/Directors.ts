@@ -1,3 +1,4 @@
+import { slugField } from '../../util/slugField';
 import type { CollectionConfig } from 'payload/types';
 import { t, _t } from '../../i18n';
 
@@ -22,6 +23,7 @@ const Directors: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    slugField('name'),
     {
       name: 'dateOfBirth',
       label: t('Born'),

@@ -1,16 +1,16 @@
+import { slugField } from '../../util/slugField';
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../../i18n';
 
-const Carriers: CollectionConfig = {
-  slug: 'carriers',
+const ScreeningGroups: CollectionConfig = {
+  slug: 'screeningGroups',
   labels: {
-    singular: t('Film Carrier'),
-    plural: t('Film Carriers'),
+    singular: t('Group'),
+    plural: t('Groups'),
   },
   admin: {
-    group: t('Film Prints'),
-    defaultColumns: ['type', 'name'],
-    useAsTitle: 'name',
+    group: t('Screenings'),
+    useAsTitle: 'title',
   },
   access: {
     read: () => true,
@@ -22,9 +22,9 @@ const Carriers: CollectionConfig = {
       type: 'text',
       localized: true,
       required: true,
-      unique: true,
     },
+    slugField('name'),
   ],
 };
 
-export default Carriers;
+export default ScreeningGroups;

@@ -3,9 +3,16 @@
   padding-right: .5rem;  
   font-weight: var(--font-weight-normal);
 }
+.language,
+.language:active,
+.language:visited {
+  font: inherit;
+  text-decoration: none;
+  color: inherit;
+}
 .language.active {
-  font-weight: var(--font-weight-bold);
+  text-decoration: underline;
 }
 .language:not(:last-child) {
-  border-right: 2px solid;
+  border-right: 1.5px solid;
 }

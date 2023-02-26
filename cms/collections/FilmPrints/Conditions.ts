@@ -19,6 +19,7 @@ const Conditions: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+      localized: true,
       required: true,
       unique: true,
     },

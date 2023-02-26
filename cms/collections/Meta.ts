@@ -9,6 +9,7 @@ export const Meta: Field = {
     {
       name: 'description',
       label: t('Description'),
+      localized: true,
       type: 'textarea',
     },
     {

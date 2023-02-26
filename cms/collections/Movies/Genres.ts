@@ -1,3 +1,4 @@
+import { slugField } from '../../util/slugField';
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../../i18n';
 
@@ -20,9 +21,11 @@ const Genres: CollectionConfig = {
       name: 'name',
       label: t('Name'),
       type: 'text',
+      localized: true,
       required: true,
       unique: true,
     },
+    slugField('name'),
   ],
 };
 

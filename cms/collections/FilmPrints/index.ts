@@ -1,10 +1,16 @@
 import payload from 'payload';
+import type { OptionObject } from 'payload/dist/fields/config/types';
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../../i18n';
-import { slugField } from '../../util/slugField';
+import { slugField, slugFormat } from '../../util/slugField';
 import analogueDigitalTypeField from './fields';
 
-const FilmPrints: CollectionConfig = {
+const ageLimitOptions: OptionObject[] = [0, 6, 12, 16, 18].map((x) => ({
+  label: `FSK${x}`,
+  value: `FSK${x}`,
+}));
+
+export const FilmPrints: CollectionConfig = {
   slug: 'filmPrints',
   labels: {
     singular: t('Film Print'),
@@ -18,34 +24,37 @@ const FilmPrints: CollectionConfig = {
   access: {
     read: () => true,
   },
+  hooks: {
+    beforeValidate: [
+      // set title and slug from movie.title and movie.format
+      async ({ data }) => {
+        if (!data?.movie || !data?.format) return data;
+
+        // create title from movie & format
+        const movie = await payload.findByID({
+          collection: 'movies',
+          id: data.movie,
+        });
+        const format = await payload.findByID({
+          collection: 'formats',
+          id: data.format,
+        });
+        const title = `${movie.originalTitle} ${format.name}`;
+        data.title = title;
+        data.slug = slugFormat(title);
+        return data;
+      },
+    ],
+  },
   fields: [
     {
       name: 'title',
       label: t('Title'),
       type: 'text',
+      localized: true,
       unique: true,
       admin: {
         readOnly: true,
-      },
-      hooks: {
-        beforeValidate: [
-          async ({ data }) => {
-            if (!data?.movie || !data?.format) return data;
-
-            // create title from movie & format
-            const movie = await payload.findByID({
-              collection: 'movies',
-              id: data.movie,
-            });
-            const format = await payload.findByID({
-              collection: 'formats',
-              id: data.format,
-            });
-            const res = data;
-            res.title = `${movie.originalTitle} ${format.name}`;
-            return res;
-          },
-        ],
       },
     },
     slugField('title'),
@@ -54,14 +63,21 @@ const FilmPrints: CollectionConfig = {
       label: t('Movie'),
       type: 'relationship',
       relationTo: 'movies',
+      required: true,
+      hasMany: false,
     },
-    analogueDigitalTypeField('type'),
     {
       name: 'filmprintType',
       label: t('Filmprint Type'),
       type: 'relationship',
       relationTo: 'types',
       required: true,
+    },
+    {
+      name: 'isRental',
+      label: t('Is rental'),
+      type: 'checkbox',
+      defaultValue: false,
     },
     {
       name: 'duration',
@@ -74,31 +90,21 @@ const FilmPrints: CollectionConfig = {
       required: true,
     },
     {
-      type: 'collapsible',
-      label: t('Language'),
-      fields: [
-        {
-          name: 'language',
-          label: t('Language Version'),
-          type: 'relationship',
-          relationTo: 'languages',
-          required: true,
-        },
-        {
-          name: 'isOriginalLanguage',
-          label: t('Original Language'),
-          type: 'checkbox',
-          defaultValue: false,
-        },
-        {
-          name: 'subtitles',
-          label: t('Subtitles'),
-          type: 'relationship',
-          relationTo: 'languages',
-          required: false,
-        },
-      ],
+      name: 'languageVersion',
+      label: t('Language Version'),
+      type: 'relationship',
+      relationTo: 'languageVersions',
+      hasMany: false,
+      required: true,
     },
+    {
+      name: 'ageLimit',
+      label: t('Age Limit'),
+      type: 'select',
+      options: ageLimitOptions,
+      defaultValue: '0',
+    },
+    analogueDigitalTypeField('type'),
     {
       type: 'collapsible',
       label: t('Format'),
@@ -118,7 +124,9 @@ const FilmPrints: CollectionConfig = {
           label: t('Carrier'),
           type: 'relationship',
           relationTo: 'carriers',
-          filterOptions: () => ({ type: { equals: 'analogue' } }),
+          admin: {
+            condition: (data) => data?.type === 'analogue',
+          },
           required: true,
         },
         {
@@ -132,7 +140,7 @@ const FilmPrints: CollectionConfig = {
         },
         {
           name: 'aspectRatio',
-          label: t('Aspect Ration'),
+          label: t('Aspect Ratio'),
           type: 'relationship',
           relationTo: 'aspectRatios',
           required: true,

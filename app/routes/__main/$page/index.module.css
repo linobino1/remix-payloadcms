@@ -6,14 +6,3 @@
   min-height: 100vh;
   width: 100%;
 }
-.mainstage {
-  width: min(80vw, var(--page-max-width));
-  margin: 0 auto;
-  color: var(--color-white);
-  padding: 3rem 1rem 3rem 1rem;
-}
-@media (max-width: 700px) {
-  .mainstage {
-    width: 100%;
-  }
-}

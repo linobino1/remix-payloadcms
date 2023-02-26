@@ -17,7 +17,7 @@ export const PostsList: React.FC<Props> = ({ posts }) => {
   return posts?.length ? (
     <div className={classes.posts}>
       {posts.map((post) => (
-        <div key={post.slug} >
+        <div key={post.slug} className={classes.postWrapper}>
           <PostComponent post={post} />
           <hr />
         </div>

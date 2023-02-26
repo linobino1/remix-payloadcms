@@ -1,4 +1,4 @@
-import { Screening as ScreeningComponent } from '~/components/Screening';
+import { ScreeningsListItem } from '~/components/Blocks/ScreeningsList/item';
 import { Link } from '@remix-run/react';
 import type { Screening } from 'payload/generated-types';
 import React from 'react';
@@ -18,8 +18,8 @@ export const ScreeningsList: React.FC<Props> = ({ screenings }) => {
   return screenings?.length ? (
     <div className={classes.list}>
       {screenings.map((screening) => (
-        <Link to={`screening/${screening.slug as string}`} key={screening.id}>
-          <ScreeningComponent screening={screening} />
+        <Link to={`${screening.slug as string}`} key={screening.id}>
+          <ScreeningsListItem screening={screening} />
         </Link>
       ))}
     </div>

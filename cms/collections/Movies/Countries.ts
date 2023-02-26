@@ -14,8 +14,6 @@ const Countries: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: () => true,
-    update: () => true,
   },
   fields: [
     {

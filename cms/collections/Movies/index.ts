@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload/types';
-import { t, _t } from '../../i18n';
+import { t } from '../../i18n';
 import { slugField } from '../../util/slugField';
 
 const Movies: CollectionConfig = {
@@ -18,18 +18,19 @@ const Movies: CollectionConfig = {
   },
   fields: [
     {
+      name: 'title',
+      label: t('Title'),
+      type: 'text',
+      localized: true,
+      required: true,
+    },
+    {
       name: 'originalTitle',
       label: t('Original Title'),
       type: 'text',
       required: true,
     },
-    slugField('originalTitle'),
-    {
-      name: 'titleDE',
-      label: t('German Title'),
-      type: 'text',
-      required: true,
-    },
+    slugField('title'),
     {
       name: 'header',
       label: t('Header Image'),
@@ -76,16 +77,10 @@ const Movies: CollectionConfig = {
       required: true,
     },
     {
-      name: 'publicationDate',
-      label: t('Publication Date'),
-      type: 'date',
+      name: 'year',
+      label: t('Year of publication'),
+      type: 'number',
       required: true,
-      admin: {
-        date: {
-          pickerAppearance: 'dayOnly',
-          displayFormat: _t('dateFormatAdmin'),
-        },
-      },
     },
     {
       name: 'genres',
@@ -98,6 +93,7 @@ const Movies: CollectionConfig = {
       name: 'synopsis',
       label: t('Synopsis'),
       type: 'textarea',
+      localized: true,
       maxLength: 350,
       admin: {
         description: t('AdminExplainSynopsis'),
@@ -108,22 +104,12 @@ const Movies: CollectionConfig = {
       name: 'info',
       label: t('More Info'),
       type: 'richText',
+      localized: true,
       admin: {
         description: t('AdminExplainMoreInfo'),
       },
       required: true,
     },
-    // {
-    //   name: 'mediaUrl',
-    //   type: 'text',
-    //   access: {
-    //     // create: ({ req: { user } }) => { ... },
-    //     read: ({ req: { user } }) => true,
-    //     // update: ({ req: { user } }) => { ... },
-    //     // delete: ({ req: { user } }) => { ... },
-    //     // admin: ({ req: { user } }) => { ... },
-    //   },
-    // },
   ],
 };
 

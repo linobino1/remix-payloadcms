@@ -1,4 +1,15 @@
+import type { LoaderArgs} from "@remix-run/node";
+import { redirect } from "@remix-run/router";
+import type { Page } from "payload/generated-types";
 import { useTranslation } from "react-i18next";
+
+export const loader = async ({ context: { payload }}: LoaderArgs) => {
+  const data = await payload.findGlobal({
+    slug: 'site',
+  });
+  
+  throw redirect(`/${(data.homePage as Page)?.slug}`);
+};
 
 export default function Index() {
   const { t } = useTranslation();

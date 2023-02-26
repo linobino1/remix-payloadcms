@@ -38,6 +38,7 @@ export const Navigation: React.FC<Props> = ({ navigation, className }) => {
           <Image
             src={mediaUrl(icon as Media)}
             alt={(icon as Media)?.alt}
+            className={classes.image}
           />
         ) : (
           <span>{name}</span>

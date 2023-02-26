@@ -20,6 +20,7 @@ const FilmPrintTypes: CollectionConfig = {
       name: 'name',
       label: t('name'),
       type: 'text',
+      localized: true,
       required: true,
       unique: true,
     },

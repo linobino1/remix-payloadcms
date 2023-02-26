@@ -1,5 +1,6 @@
 import { buildConfig } from "payload/config";
-import path from "path";
+import path from 'path';
+import i18n from "./i18n";
 import Media from './cms/collections/Media';
 import Navigations from './cms/collections/Navigations';
 import Posts from './cms/collections/Posts';
@@ -11,21 +12,19 @@ import AspectRatios from './cms/collections/FilmPrints/AspectRatios';
 import Carriers from './cms/collections/FilmPrints/Carriers';
 import Conditions from './cms/collections/FilmPrints/Conditions';
 import Formats from './cms/collections/FilmPrints/Formats';
-import Rightholders from './cms/collections/FilmPrints/Rightholders';
 import SoundFormats from './cms/collections/FilmPrints/SoundFormats';
 import Movies from './cms/collections/Movies';
 import Actors from './cms/collections/Movies/Actors';
 import Directors from './cms/collections/Movies/Directors';
 import Genres from './cms/collections/Movies/Genres';
-import Languages from './cms/collections/Movies/Languages';
 import Series from './cms/collections/Movies/Series';
 import FilmPrintTypes from './cms/collections/FilmPrints/FilmPrintTypes';
 import Countries from './cms/collections/Movies/Countries';
 import Site from './cms/globals/Site';
-import ScreeningTypes from './cms/collections/Screenings/ScreeningTypes';
 import Locations from './cms/collections/Screenings/Locations';
 import ScreeningSeries from './cms/collections/Screenings/ScreeningSeries';
-import i18n from "./i18n";
+import ScreeningGroups from './cms/collections/Screenings/ScreeningGroups';
+import LanguageVersions from './cms/collections/FilmPrints/LanguageVersions';
 
 export default buildConfig({
   serverURL: "http://localhost:3000",
@@ -47,7 +46,7 @@ export default buildConfig({
 
     // Screenings
     Screenings,
-    ScreeningTypes,
+    ScreeningGroups,
     Locations,
     ScreeningSeries,
 
@@ -58,8 +57,8 @@ export default buildConfig({
     Carriers,
     Conditions,
     Formats,
-    Rightholders,
     SoundFormats,
+    LanguageVersions,
 
     // Movies
     Movies,
@@ -67,7 +66,6 @@ export default buildConfig({
     Directors,
     Genres,
     Countries,
-    Languages,
     Series,
 
   ],

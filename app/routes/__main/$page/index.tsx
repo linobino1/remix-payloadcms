@@ -9,8 +9,10 @@ import { useLoaderData } from '@remix-run/react';
 import PageHeader from '~/components/PageHeader';
 import { MAX_DATE, MIN_DATE } from '~/util/date';
 import classes from './index.module.css';
+import i18next from "~/i18next.server";
 
-export const loader = async ({ params, context: { payload }}: LoaderArgs) => {
+export const loader = async ({ request, params, context: { payload }}: LoaderArgs) => {
+  const locale = await i18next.getLocale(request);
   const pageDocs = await payload.find({
     collection: 'pages',
     where: {
@@ -18,6 +20,7 @@ export const loader = async ({ params, context: { payload }}: LoaderArgs) => {
         equals: params.page,
       },
     },
+    locale,
   });
   const page = pageDocs.docs[0];
 
@@ -46,35 +49,44 @@ export const loader = async ({ params, context: { payload }}: LoaderArgs) => {
           },
         ],
       },
+      locale,
     });
   }
 
   let screenings = null;
   if (screeningsList) {
+    const filters = [];
+    if (screeningsList.filters.group) {
+      filters.push({
+        group: {
+          equals: screeningsList.filters.group,
+        },
+      });
+    }
+    if (screeningsList.filters.from) {
+      filters.push({
+        date: {
+          greater_than_equal: parseISO(screeningsList.filters.from),
+        },
+      });
+    }
+    if (screeningsList.filters.until) {
+      filters.push({
+        date: {
+          less_than_equal: parseISO(screeningsList.filters.until),
+        },
+      });
+    }
     screenings = await payload.find({
       collection: 'screenings',
       where: {
-        and: [
-          {
-            date: {
-              greater_than_equal: screeningsList.from as string
-                ? parseISO(screeningsList.from as string)
-                : MIN_DATE,
-            },
-          },
-          {
-            date: {
-              less_than_equal: screeningsList.until as string
-                ? parseISO(screeningsList.until as string)
-                : MAX_DATE,
-            },
-          },
-        ],
+        and: filters,
       },
+      depth: 7,
+      locale,
     });
   }
 
-  console.log(screenings)
   return {
     page,
     posts: posts?.docs,
@@ -94,13 +106,13 @@ export const PageComponent: React.FC = () => {
   return (
     <div className={classes.page}>
       <PageHeader />
-      <div className={classes.mainstage}>
+      <main>
         <Blocks
           layout={page.layout}
           posts={posts}
           screenings={screenings}
         />
-      </div>
+      </main>
     </div>
   );
 };

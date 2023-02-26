@@ -31,3 +31,5 @@ export const Date: React.FC<Props> = ({
     </time>
   );
 };
+
+export default Date;

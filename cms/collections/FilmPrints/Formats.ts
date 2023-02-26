@@ -10,7 +10,7 @@ const Formats: CollectionConfig = {
   },
   admin: {
     group: t('Film Prints'),
-    defaultColumns: ['name'],
+    defaultColumns: ['type', 'name'],
     useAsTitle: 'name',
   },
   access: {
@@ -22,6 +22,7 @@ const Formats: CollectionConfig = {
       name: 'name',
       label: t('Name'),
       type: 'text',
+      localized: true,
       required: true,
     },
   ],

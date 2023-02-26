@@ -29,6 +29,7 @@ const Posts: CollectionConfig = {
     {
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     slugField('title'),
@@ -53,6 +54,7 @@ const Posts: CollectionConfig = {
     {
       name: 'content',
       type: 'richText',
+      localized: true,
       required: true,
     },
     {

@@ -13,6 +13,7 @@ export const Site: GlobalConfig = {
     {
       name: 'title',
       type: 'text',
+      localized: true,
       required: true,
     },
     {
@@ -25,6 +26,12 @@ export const Site: GlobalConfig = {
       label: t('Logo'),
       type: 'upload',
       relationTo: 'media',
+    },
+    {
+      name: 'homePage',
+      label: t('Homepage'),
+      type: 'relationship',
+      relationTo: 'pages',
     },
   ],
 };

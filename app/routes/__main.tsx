@@ -3,16 +3,28 @@ import { Outlet, useLoaderData } from "@remix-run/react";
 import type { ReactNode } from "react";
 import Footer from "~/components/Footer";
 import Header from "~/components/Header";
+import i18next from "~/i18next.server";
 import classes from "./__main.module.css";
 
-export const loader = async ({ context: { payload, user }}: LoaderArgs) => {
+export const loader = async ({ request, context: { payload, user }}: LoaderArgs) => {
+  const locale = await i18next.getLocale(request);
+
   const [site, navigations] = await Promise.all([
     payload.findGlobal({
       slug: 'site',
     }),
-    payload.find({
-      collection: 'navigations',
-    }),
+    fetch(`http://localhost:3000/api/navigations?locale=${locale}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json()),
+
+    // local API is not returning localized fields in correct locale...
+    // payload.find({
+    //   collection: 'navigations',
+    // }),
+    // locale,
   ]);
   return {
     user,
@@ -42,9 +54,7 @@ export default function Layout({
           navigations={navigations}
           content={header} />
 
-        <main>
-          <Outlet />
-        </main>
+        <Outlet />
       </div>
 
       <Footer

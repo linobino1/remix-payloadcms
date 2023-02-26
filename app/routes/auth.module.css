@@ -13,6 +13,8 @@
   flex-direction: column;
   align-items: center;
   background: var(--color-white);
+  color: var(--color-black);
   padding: 4em;
   row-gap: 1em;
+  width: fit-content;
 }

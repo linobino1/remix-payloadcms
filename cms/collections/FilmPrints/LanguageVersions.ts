@@ -1,11 +1,11 @@
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../../i18n';
 
-const Rightholders: CollectionConfig = {
-  slug: 'rightholders',
+const LanguageVersions: CollectionConfig = {
+  slug: 'languageVersions',
   labels: {
-    singular: t('Right Holder'),
-    plural: t('Right Holders'),
+    singular: t('Language Version'),
+    plural: t('Language Versions'),
   },
   admin: {
     group: t('Film Prints'),
@@ -20,10 +20,10 @@ const Rightholders: CollectionConfig = {
       name: 'name',
       label: t('Name'),
       type: 'text',
+      localized: true,
       required: true,
-      unique: true,
     },
   ],
 };
 
-export default Rightholders;
+export default LanguageVersions;

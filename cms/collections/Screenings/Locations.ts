@@ -1,3 +1,4 @@
+import { slugField } from '../../util/slugField';
 import type { CollectionConfig } from 'payload/types';
 import { t } from '../../i18n';
 
@@ -9,17 +10,20 @@ const Locations: CollectionConfig = {
   },
   admin: {
     group: t('Screenings'),
-    useAsTitle: 'title',
+    useAsTitle: 'name',
+    defaultColumns: ['name'],
   },
   access: {
     read: () => true,
   },
   fields: [
     {
-      name: 'title',
-      label: t('Title'),
+      name: 'name',
+      label: t('Name'),
+      localized: true,
       type: 'text',
     },
+    slugField('name'),
   ],
 };
 

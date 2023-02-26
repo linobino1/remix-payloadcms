@@ -25,6 +25,7 @@ const Pages: CollectionConfig = {
       name: 'title',
       label: t('Title'),
       type: 'text',
+      localized: true,
       required: true,
     },
     slugField('title'),

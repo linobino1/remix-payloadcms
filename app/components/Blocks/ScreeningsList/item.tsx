@@ -4,7 +4,8 @@ import type {
   Media,
   FilmPrint,
   Movie,
-  Screening as ScreeningType,
+  Screening,
+  ScreeningSery,
 } from 'payload/generated-types';
 import { Date } from '~/components/Date';
 import Image from '~/components/Image';
@@ -12,10 +13,10 @@ import { mediaUrl } from '~/util/mediaUrl';
 import { useTranslation } from 'react-i18next';
 
 type Props = {
-  screening: ScreeningType
+  screening: Screening
 };
 
-export const Screening: React.FC<Props> = ({ screening }) => {
+export const ScreeningsListItem: React.FC<Props> = ({ screening }) => {
   const { t } = useTranslation();
 
   return (
@@ -41,10 +42,17 @@ export const Screening: React.FC<Props> = ({ screening }) => {
       </div>
       <div className={classes.imgWrapper}>
         <Image
-          src={mediaUrl(((screening.filmprint as FilmPrint)?.movie as Movie)?.header as Media)}
-          alt={(((screening.filmprint as FilmPrint)?.movie as Movie)?.header as Media)?.alt}
+          src={mediaUrl(((screening.featureFilms[0] as FilmPrint)?.movie as Movie)?.header as Media)}
+          alt={(((screening.featureFilms[0] as FilmPrint)?.movie as Movie)?.header as Media)?.alt}
           fill
         />
+      </div>
+      <div className={classes.tags}>
+        { screening.series && (
+          <div className={`${classes.tag} ${classes.series}`}>
+            {(screening.series as ScreeningSery).name}
+          </div>
+        )}
       </div>
       <div className={classes.info}>
         <Date
@@ -63,4 +71,4 @@ export const Screening: React.FC<Props> = ({ screening }) => {
   );
 };
 
-export default Screening;
+export default ScreeningsListItem;
