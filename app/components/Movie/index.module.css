@@ -9,8 +9,8 @@
 }
 .poster {
   position: relative;
-  width: 16rem;
-  aspect-ratio: 2/3;
+  width: 260px;
+  height: 390px;
 }
 .poster img {
   object-fit: cover;

@@ -5,7 +5,6 @@ import type {
   Navigation as NavigationType,
 } from "payload/generated-types";
 import { Link } from '@remix-run/react';
-import { mediaUrl } from '~/util/mediaUrl';
 import { Image } from '~/components/Image';
 import classes from './index.module.css';
 import LanguageSwitch from '../LanguageSwitch';
@@ -36,8 +35,7 @@ export const Navigation: React.FC<Props> = ({ navigation, className }) => {
         // image or plain text
         const inner: React.ReactNode = icon ? (
           <Image
-            src={mediaUrl(icon as Media)}
-            alt={(icon as Media)?.alt}
+            image={icon as Media}
             className={classes.image}
           />
         ) : (

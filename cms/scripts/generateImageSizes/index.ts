@@ -1,8 +1,29 @@
 import payload from "payload";
 import path from "path";
+import fs from "fs";
 import invariant from "tiny-invariant";
+import type { Config } from "payload/generated-types";
 
 require('dotenv').config();
+
+const mediaDir = path.resolve(__dirname, '../../../media');
+const mediaCollections: {
+  name: keyof Config['collections']
+  relDir: string
+}[] = [
+  {
+    name: 'media',
+    relDir: '',
+  },
+  {
+    name: 'posters',
+    relDir: '/posters',
+  },
+  {
+    name: 'filmStills',
+    relDir: '/filmstills',
+  },
+];
 
 const regenerateMediaSizes = async () => {
   try {
@@ -14,38 +35,69 @@ const regenerateMediaSizes = async () => {
       mongoURL: process.env.MONGODB_URI,
       local: true,
     });
-
-    const media = await payload.find({
-      collection: 'media',
-      depth: 0,
-      limit: 300,
-    });
-    await Promise.all(media.docs.map(async (mediaDoc: any) => {
-      try {
-        const staticDir = path.resolve(__dirname, '../../../media');
-
-        await payload.update({
-          collection: 'media',
-          id: mediaDoc.id,
-          data: mediaDoc,
-          filePath: `${staticDir}/${mediaDoc.filename}`,
-          overwriteExistingFiles: true,
-        });
-
-        console.log(`Media ${mediaDoc.alt || mediaDoc.id} regenerated successfully`);
-      } catch (err) {
-        console.error(`Media ${mediaDoc.alt || mediaDoc.id} failed to regenerate`);
-        console.error(err);
-      }
-    }));
   } catch (err) {
-    console.log('Unable to find documents with payload');
+    console.log('Unable to initialize payload');
     console.error(err);
     process.exit(0);
   }
+    
+  await Promise.all(mediaCollections.map(async (collection) => {
+    const media = await payload.find({
+      collection: collection.name,
+      depth: 0,
+      limit: 300,
+    });
+
+    await Promise.all(media.docs.map(async (mediaDoc: any) => {
+      const filePath = `${mediaDir}${collection.relDir}/${mediaDoc.filename}`;
+      const tempFilePath = `${mediaDir}${collection.relDir}/temp_${mediaDoc.filename}`;
+      
+      if (!fs.existsSync(filePath)) {
+        console.log(`does not exist: ${filePath}`);
+        return;
+      }
+      
+      // copy original (not sure why, but payload deletes the original ...)
+      try {
+        fs.copyFileSync(filePath, tempFilePath);
+        console.log(`${filePath} => ${tempFilePath}`)
+      } catch (err) {
+        console.log(`could not create a copy of the original ${filePath} at ${tempFilePath}`)
+        console.log(err)
+      }
+
+      try {
+        await payload.update({
+          collection: collection.name,
+          id: mediaDoc.id,
+          data: mediaDoc,
+          filePath,
+          overwriteExistingFiles: true,
+        });
+        console.log(`Media ${mediaDoc.filename} regenerated successfully`);
+      } catch (err) {
+        console.error(`Media ${mediaDoc.filename} failed to regenerate`);
+        console.error(err);
+      } finally {
+        try {
+          // restore original from copy
+          fs.renameSync(tempFilePath, filePath);
+          console.log(`${tempFilePath} => ${filePath}`)
+        } catch (err) {
+          console.log(`could not restore original ${tempFilePath} to ${filePath}`)
+          console.log(err)
+        }
+        try {
+          // remove temp file
+          fs.rmSync(tempFilePath);
+        } catch {}
+      }
+     }));
+         
+   }));
 
   console.log('Media size regeneration completed!');
-  process.exit(0);
+  // process.exit(0);
 };
 
 regenerateMediaSizes();

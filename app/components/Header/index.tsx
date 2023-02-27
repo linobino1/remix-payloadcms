@@ -7,10 +7,8 @@ import { Navigation } from '../Navigation';
 import { UserStatus } from '../UserStatus';
 import { Link } from '@remix-run/react';
 import { Image } from '~/components/Image';
-import { mediaUrl } from '~/util/mediaUrl';
 import type { Site, Navigation as NavigationType } from 'payload/generated-types';
 import classes from './index.module.css';
-import { createPortal } from 'react-dom';
 
 type Props = {
   site: Site
@@ -37,10 +35,9 @@ const Header: React.FC<Props> = ({
           {site.logo as Media && (
             <Image
               className={classes.mainLogo}
-              src={mediaUrl(site.logo as Media)}
+              image={site.logo as Media}
               width={200}
               height={50}
-              alt="logo"
             />
           )}
         </Link>

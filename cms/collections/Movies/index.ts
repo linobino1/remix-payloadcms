@@ -32,10 +32,10 @@ const Movies: CollectionConfig = {
     },
     slugField('title'),
     {
-      name: 'header',
+      name: 'filmStill',
       label: t('Header Image'),
       type: 'upload',
-      relationTo: 'media',
+      relationTo: 'filmStills',
       required: true,
       admin: {
         description: t('AdminExplainHeader'),
@@ -45,7 +45,7 @@ const Movies: CollectionConfig = {
       name: 'poster',
       label: t('Poster'),
       type: 'upload',
-      relationTo: 'media',
+      relationTo: 'posters',
       required: true,
       admin: {
         description: t('AdminExplainPoster'),

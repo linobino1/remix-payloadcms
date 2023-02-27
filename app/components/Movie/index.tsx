@@ -1,8 +1,15 @@
-import type { Media, Country, FilmPrint, Movie as MovieType, Director, Format, LanguageVersion } from "payload/generated-types";
+import type {
+  Country,
+  FilmPrint,
+  Movie as MovieType,
+  Director,
+  Format,
+  LanguageVersion,
+  Poster as PosterType,
+} from "payload/generated-types";
 import React from "react";
-import { mediaUrl } from "~/util/mediaUrl";
-import { Image } from "~/components/Image";
 import classes from './index.module.css';
+import { Poster } from "~/components/Poster";
 
 export type Props = {
   movie: MovieType
@@ -24,14 +31,15 @@ export const Movie: React.FC<Props> = ({ movie, filmprint }) => {
   return (
     <div className={classes.movie}>
       <div className={classes.poster}>
-        { movie.poster as Media && (
-          <Image
-            src={mediaUrl(movie.poster as Media)}
-            alt={(movie.poster as Media)?.alt}
-            width={316}
-            height={412}
-          />
-        )}
+        <Poster
+          poster={movie.poster as PosterType}
+          responsive={[
+            {
+              maxWidth: '(max-width: 2560px)',
+              size: 'default',
+            },
+          ]}
+        />
       </div>
       <div className={classes.movieInfo}>
         <h2 className={classes.movieTitle}>{movie.title}</h2>

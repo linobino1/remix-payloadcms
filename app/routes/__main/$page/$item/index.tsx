@@ -1,13 +1,20 @@
 import type { LoaderArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import type { Media, FilmPrint, Movie as MovieType, ScreeningGroup, Location } from "payload/generated-types";
-import Image from "~/components/Image";
+import type {
+  FilmPrint,
+  Movie as MovieType,
+  ScreeningGroup,
+  Location,
+  Poster as PosterType,
+  FilmStill as FilmStillType,
+} from "payload/generated-types";
 import { Movie } from "~/components/Movie";
-import { mediaUrl } from "~/util/mediaUrl";
 import classes from "./index.module.css";
 import { Date } from "~/components/Date";
 import i18next from "~/i18next.server";
 import { useTranslation } from "react-i18next";
+import Poster from "~/components/Poster";
+import FilmStill from "~/components/FilmStill";
 
 export const loader = async ({ params, request, context: { payload }}: LoaderArgs) => {
   const data = await payload.find({
@@ -43,26 +50,49 @@ export default function Item() {
   return (
     <>
       <h1 className={classes.title}>
-        <span>{(screening.group as ScreeningGroup).title}</span>
+        <span>{(screening.group as ScreeningGroup).name}</span>
         <span className={classes.subtitle}>{screening.title}</span>
       </h1>
       <div className={classes.imageHeader}>
-        <Image
+        <FilmStill
           className={classes.headerImage}
-          src={mediaUrl(mainMovie.header as Media)}
-          alt={(mainMovie.header as Media)?.alt}
-          fill
+          filmstill={mainMovie.filmStill as FilmStillType}
+          responsive={[
+            {
+              maxWidth: '(max-width: 320px)',
+              size: '320w',
+            },
+            {
+              maxWidth: '(max-width: 768px)',
+              size: '768w',
+            },
+            {
+              maxWidth: '(max-width: 1024px)',
+              size: '1024w',
+            },
+            {
+              maxWidth: '(max-width: 1920px)',
+              size: '1920w',
+            },
+            {
+              maxWidth: '(max-width: 2560px)',
+              size: '2560w',
+            },
+          ]}
         />
         <div className={classes.imageHeaderOverlay}>
           <div className={classes.imageHeaderOverlayContent}>
             <div className={classes.posters}>
               { (screening.featureFilms as FilmPrint[]).map((filmprint) => (
                 <div key={filmprint.id} className={classes.poster}>
-                  <Image
-                    src={mediaUrl((filmprint.movie as MovieType).poster as Media)}
-                    alt={((filmprint.movie as MovieType).poster as Media)?.alt}
-                    width={120}
-                    height={180}
+                  <Poster
+                    poster={(filmprint.movie as MovieType).poster as PosterType}
+                    responsive={[
+                      {
+                        maxWidth: '(max-width: 2560px)',
+                        size: 'default',  // we'll load this anyway
+                      },
+                    ]}
                   />
                 </div>
               ))}

@@ -92,8 +92,8 @@ img.headerImage {
 }
 .poster {
   position: relative;
-  height: 11rem;
-  aspect-ratio: 2/3;
+  width: 120px;
+  height: 180px;
 }
 .poster img {
   object-fit: cover;

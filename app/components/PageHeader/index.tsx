@@ -1,5 +1,4 @@
 import { useMatches } from "@remix-run/react";
-import { mediaUrl } from "~/util/mediaUrl";
 import Image from "../Image";
 import Navigation from "../Navigation";
 import classes from "./index.module.css";
@@ -16,9 +15,7 @@ export default function PageHeader() {
         <div className={classes.imageHeader}>
           <Image
             className={classes.headerImage}
-            src={mediaUrl(page.image as Media)}
-            alt={(page.image as Media)?.alt}
-            fill
+            image={page.image as Media}
           />
           <div className={classes.imageHeaderOverlay}>
             <button

@@ -1,5 +1,9 @@
 import type { CollectionConfig } from 'payload/types';
-import { t } from '../i18n';
+import { t } from '../../i18n';
+import path from 'path';
+
+export const staticDir = path.resolve(__dirname, '../../../media');
+export const staticURL = '/media';
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -12,6 +16,8 @@ export const Media: CollectionConfig = {
   },
   upload: {
     adminThumbnail: 'card',
+    staticDir,
+    staticURL,
     imageSizes: [
       {
         name: 'card',

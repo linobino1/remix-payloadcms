@@ -3,7 +3,7 @@ import classes from './index.module.css';
 import type { Media, Post as PostType } from 'payload/generated-types';
 import RichText from '~/components/RichText';
 import { Date } from '~/components/Date';
-import { PostImage } from './PostImage';
+import Image from '../Image';
 
 type Props = {
   post: PostType
@@ -19,10 +19,10 @@ export const Post: React.FC<Props> = ({ post }) => (
       <div className={classes.postImageWrapper}>
         {post.link ? (
           <a href={post.link}>
-            <PostImage image={post.header as Media} />
+            <Image image={post.header as Media} />
           </a>
         ) : (
-          <PostImage image={post.header as Media} />
+          <Image image={post.header as Media} />
         )}
       </div>
       <RichText content={post.content} className={classes.postContent} />

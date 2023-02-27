@@ -25,6 +25,8 @@ import Locations from './cms/collections/Screenings/Locations';
 import ScreeningSeries from './cms/collections/Screenings/ScreeningSeries';
 import ScreeningGroups from './cms/collections/Screenings/ScreeningGroups';
 import LanguageVersions from './cms/collections/FilmPrints/LanguageVersions';
+import Posters from './cms/collections/Media/Posters';
+import FilmStills from './cms/collections/Media/FilmStills';
 
 export default buildConfig({
   serverURL: "http://localhost:3000",
@@ -33,6 +35,9 @@ export default buildConfig({
   },
   i18n: {
     ...i18n,
+  },
+  graphQL: {
+    disable: true,
   },
   collections: [
     // Site
@@ -62,6 +67,8 @@ export default buildConfig({
 
     // Movies
     Movies,
+    Posters,
+    FilmStills,
     Actors,
     Directors,
     Genres,

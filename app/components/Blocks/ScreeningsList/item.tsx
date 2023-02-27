@@ -1,16 +1,15 @@
 import React from 'react';
 import classes from './index.module.css';
 import type {
-  Media,
   FilmPrint,
   Movie,
   Screening,
   ScreeningSery,
+  FilmStill as FilmStillType,
 } from 'payload/generated-types';
 import { Date } from '~/components/Date';
-import Image from '~/components/Image';
-import { mediaUrl } from '~/util/mediaUrl';
 import { useTranslation } from 'react-i18next';
+import FilmStill from '~/components/FilmStill';
 
 type Props = {
   screening: Screening
@@ -41,10 +40,14 @@ export const ScreeningsListItem: React.FC<Props> = ({ screening }) => {
         />
       </div>
       <div className={classes.imgWrapper}>
-        <Image
-          src={mediaUrl(((screening.featureFilms[0] as FilmPrint)?.movie as Movie)?.header as Media)}
-          alt={(((screening.featureFilms[0] as FilmPrint)?.movie as Movie)?.header as Media)?.alt}
-          fill
+        <FilmStill
+          filmstill={((screening.featureFilms[0] as FilmPrint)?.movie as Movie)?.filmStill as FilmStillType}
+          responsive={[
+            {
+              maxWidth: '(max-width: 2560px)',
+              size: '380x280',
+            },
+          ]}
         />
       </div>
       <div className={classes.tags}>
