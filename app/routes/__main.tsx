@@ -13,18 +13,11 @@ export const loader = async ({ request, context: { payload, user }}: LoaderArgs)
     payload.findGlobal({
       slug: 'site',
     }),
-    fetch(`http://localhost:3000/api/navigations?locale=${locale}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.json()),
-
-    // local API is not returning localized fields in correct locale...
-    // payload.find({
-    //   collection: 'navigations',
-    // }),
-    // locale,
+    payload.find({
+      collection: 'navigations',
+      depth: 12,
+      locale,
+    }),
   ]);
   return {
     user,
