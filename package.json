@@ -1,13 +1,12 @@
 {
-  "name": "repay-new",
   "private": true,
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "build": "remix vite:build",
-    "dev": "remix vite:dev",
+    "start": "NODE_ENV=production node ./build/server/index.js",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
@@ -16,7 +15,8 @@
     "@remix-run/serve": "^2.11.2",
     "isbot": "^4.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "remix-create-express-app": "^0.4.5"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.11.2",
@@ -32,6 +32,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.38",
+    "remix-express-dev-server": "^0.4.4",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
