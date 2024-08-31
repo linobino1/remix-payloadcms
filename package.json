@@ -17,14 +17,14 @@
     "@remix-run/serve": "^2.11.2",
     "isbot": "^4.1.0",
     "payload": "3.0.0-beta.96",
-    "react": "19.0.0-rc-06d0b89e-20240801",
-    "react-dom": "19.0.0-rc-06d0b89e-20240801",
+    "react": "^18.2.1",
+    "react-dom": "^18.2.1",
     "remix-create-express-app": "^0.4.5"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.11.2",
-    "@types/react": "npm:types-react@19.0.0-rc.0",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.0",
+    "@types/react": "^18.2.1",
+    "@types/react-dom": "^18.2.1",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "autoprefixer": "^10.4.19",
@@ -40,6 +40,10 @@
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
+  },
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
   },
   "engines": {
     "node": ">=20.0.0"
