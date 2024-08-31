@@ -10,6 +10,7 @@ export default defineConfig({
   plugins: [
     expressDevServer(),
     remix({
+      appDirectory: "remix",
       future: {
         v3_fetcherPersist: true,
         v3_relativeSplatPath: true,

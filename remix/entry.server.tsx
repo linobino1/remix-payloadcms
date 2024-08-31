@@ -12,6 +12,8 @@ import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 import { createExpressApp } from "remix-create-express-app";
+import type { Request, Application } from "express";
+import { nextApp } from "app/nextApp";
 
 const ABORT_DELAY = 5_000;
 
@@ -140,4 +142,21 @@ function handleBrowserRequest(
   });
 }
 
-export const app = createExpressApp({});
+export const app = createExpressApp({
+  configure: async (app: Application) => {
+    await nextApp.prepare();
+    const handle = nextApp.getRequestHandler();
+
+    app.all(/^\/(admin|api|_next)(.*)/, (req, res) => {
+      console.log("next handler");
+      return handle(req, res);
+    });
+    app.get("/test", (req, res) => {
+      res.send("Hello World");
+    });
+    // app.all("/api/*", requestHandler);
+    // app.all("/admin*", (req, res) => {
+    //   return requestHandler(req, res);
+    // });
+  },
+});

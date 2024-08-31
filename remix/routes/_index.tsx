@@ -5,18 +5,18 @@ import { useLoaderData } from "@remix-run/react";
 
 export const loader = async () => {
   const payload = await getPayload({ config });
-  await payload.delete({
-    collection: "users",
-    where: { id: { exists: true } },
-  });
+  // await payload.delete({
+  //   collection: "users",
+  //   where: { id: { exists: true } },
+  // });
 
-  await payload.create({
-    collection: "users",
-    data: {
-      email: `${Math.random().toString().substring(2, 10)}@test.de`,
-      password: "123",
-    },
-  });
+  // await payload.create({
+  //   collection: "users",
+  //   data: {
+  //     email: `${Math.random().toString().substring(2, 10)}@test.de`,
+  //     password: "123",
+  //   },
+  // });
   const users = await payload.find({
     collection: "users",
   });

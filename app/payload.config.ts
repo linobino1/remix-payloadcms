@@ -18,6 +18,10 @@ export default buildConfig({
       auth: true,
       fields: [],
     },
+    {
+      slug: "test",
+      fields: [],
+    },
   ],
   secret: process.env.PAYLOAD_SECRET ?? "",
   typescript: {
